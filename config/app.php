@@ -1,5 +1,9 @@
 <?php
 
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Translation\TranslationServiceProvider as BaseTranslationServiceProvider;
+use LaravelLang\JsonFallback\TranslationServiceProvider as JsonTranslationServiceProvider;
+
 return [
 
     /*
@@ -84,6 +88,11 @@ return [
 
     'faker_locale' => env('APP_FAKER_LOCALE', 'en_US'),
 
+    'available_locales' => [
+        'English' => 'en',
+        'Vietnamese' => 'vi',
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Encryption Key
@@ -123,4 +132,9 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'providers' => ServiceProvider::defaultProviders()->merge([
+        // your service providers
+    ])->replace([
+        BaseTranslationServiceProvider::class => JsonTranslationServiceProvider::class,
+    ])->toArray(),
 ];
