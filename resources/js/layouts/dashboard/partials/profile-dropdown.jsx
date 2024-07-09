@@ -10,24 +10,28 @@ import {
   Typography,
   alpha,
 } from '@mui/material';
-import { ASSETS_URL } from '@/config-global';
-import paths from '@/paths';
 import CustomPopover, { usePopover } from '@/components/custom-popover';
 import { route } from 'ziggy-js';
+import { APP_URL } from '@/config-global';
+import { routes } from '@/routes';
+import { usePage, router } from '@inertiajs/react';
+import { useLocales } from '@/locales';
 
-ProfileDropdown.propTypes = {
-  user: PropTypes.object,
-};
+const ProfileDropdown = () => {
+  const { t } = useLocales();
 
-const ProfileDropdown = ({ user }) => {
+  const { auth } = usePage().props;
+  const { user } = auth;
+
   const popover = usePopover();
 
   const handleLogout = () => {
-    route(paths.auth.logout.route);
+    router.get(route(routes.auth.logout));
   };
+
   const handleClickItem = (path) => {
     popover.onClose();
-    // router.push(path);
+    route(path);
   };
 
   return (
@@ -45,7 +49,7 @@ const ProfileDropdown = ({ user }) => {
         }}
       >
         <Avatar
-          src={user?.photoURL || `${ASSETS_URL}/assets/images/avatar.jpg`}
+          src={user?.photoURL || `${APP_URL}/assets/images/avatar.jpg`}
           alt={user?.email}
           sx={{
             width: 36,
@@ -62,7 +66,7 @@ const ProfileDropdown = ({ user }) => {
       >
         <Box sx={{ p: 2, pb: 1.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {user?.first_name} {user?.last_name}
+            {user?.full_name}
           </Typography>
 
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
@@ -71,18 +75,21 @@ const ProfileDropdown = ({ user }) => {
         </Box>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
-        <Stack sx={{ p: 1 }}>
+        <Stack sx={{ p: 1, textTransform: 'capitalize' }}>
           <MenuItem sx={{ px: 1 }} onClick={() => handleClickItem('/')}>
-            <Typography variant="body2">Home</Typography>
+            <Typography variant="body2">{t('home')}</Typography>
           </MenuItem>
           <MenuItem
             sx={{ px: 1 }}
-            onClick={() => handleClickItem(paths.dashboard.root)}
+            onClick={() => handleClickItem(routes.dashboard.overview.index)}
           >
-            <Typography variant="body2">Dashboard</Typography>
+            <Typography variant="body2">{t('dashboard')}</Typography>
           </MenuItem>
-          <MenuItem sx={{ px: 1 }} onClick={() => handleClickItem('/profile')}>
-            <Typography variant="body2">Profile</Typography>
+          <MenuItem
+            sx={{ px: 1 }}
+            onClick={() => handleClickItem(routes.auth.logout)}
+          >
+            <Typography variant="body2">{t('profile')}</Typography>
           </MenuItem>
         </Stack>
 
@@ -94,12 +101,18 @@ const ProfileDropdown = ({ user }) => {
             m: 1,
             fontWeight: 'fontWeightBold',
             color: 'error.main',
+            textTransform: 'capitalize',
           }}
         >
-          <Typography variant="body2">Logout</Typography>
+          <Typography variant="body2">{t('logout')}</Typography>
         </MenuItem>
       </CustomPopover>
     </>
   );
 };
+
+ProfileDropdown.propTypes = {
+  user: PropTypes.object,
+};
+
 export default ProfileDropdown;

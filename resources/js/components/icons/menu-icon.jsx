@@ -1,6 +1,6 @@
+import { APP_URL } from '@/config-global';
 import { Box } from '@mui/material';
 import React, { memo } from 'react';
-import { ASSETS_URL } from '../../config-global';
 
 const MenuIcon = ({ ...other }) => (
   <Box
@@ -13,7 +13,7 @@ const MenuIcon = ({ ...other }) => (
     {...other}
   >
     <img
-      src={`${ASSETS_URL}/assets/icons/navbar/ic_menu_item.svg`}
+      src={`${APP_URL}/assets/icons/navbar/ic_menu_item.svg`}
       alt="Menu Icon"
     />
   </Box>

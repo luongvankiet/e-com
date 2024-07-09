@@ -1,10 +1,12 @@
-import { useEffect } from 'react';
-import GuestLayout from '@/layouts/GuestLayout';
+import React, { useEffect } from 'react';
 import InputError from '@/components/InputError';
 import InputLabel from '@/components/InputLabel';
 import PrimaryButton from '@/components/PrimaryButton';
 import TextInput from '@/components/TextInput';
 import { Head, useForm } from '@inertiajs/react';
+import { route } from 'ziggy-js';
+import { AuthLayout } from '@/layouts';
+import { routes } from '@/routes';
 
 export default function ConfirmPassword() {
   const { data, setData, post, processing, errors, reset } = useForm({
@@ -20,11 +22,11 @@ export default function ConfirmPassword() {
   const submit = (e) => {
     e.preventDefault();
 
-    post(route('password.confirm'));
+    post(route(routes.auth.confirmPassword));
   };
 
   return (
-    <GuestLayout>
+    <AuthLayout>
       <Head title="Confirm Password" />
 
       <div className="mb-4 text-sm text-gray-600">
@@ -55,6 +57,6 @@ export default function ConfirmPassword() {
           </PrimaryButton>
         </div>
       </form>
-    </GuestLayout>
+    </AuthLayout>
   );
 }

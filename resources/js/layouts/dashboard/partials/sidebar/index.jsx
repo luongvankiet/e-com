@@ -1,24 +1,26 @@
-import { Box, Drawer, List, Stack } from '@mui/material';
+import { Box, Drawer, Stack } from '@mui/material';
 import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
-import { Scrollbar } from '@/components/scrollbar';
 import { useResponsive } from '@/hooks/use-responsive';
-import Logo from 'src/components/logo';
-import paths from '@/paths';
+import Logo from '@/components/logo';
 import { NAV } from '@/layouts/config-layout';
 import SidebarConfig from './sidebar-config';
-import SidebarList from './sidebar-list';
+import Scrollbar from '@/components/scrollbar';
+import { usePage } from '@inertiajs/react';
+import { useNavData } from '../../config-navigation';
+import SidebarGroup from './sidebar-group';
 
 const Sidebar = ({ openNav, onCloseNav }) => {
   const lgUp = useResponsive('up', 'lg');
+  const { current_route_name } = usePage().props;
 
-  // useEffect(() => {
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  //   if (openNav) {
-  //     onCloseNav();
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [pathname]);
+  const navData = useNavData();
+
+  useEffect(() => {
+    if (openNav) {
+      onCloseNav();
+    }
+  }, [current_route_name]);
 
   const renderContent = (
     <Scrollbar
@@ -36,17 +38,14 @@ const Sidebar = ({ openNav, onCloseNav }) => {
         <Logo sx={{ ml: 3 }} />
       </Box>
 
-      {/* <List disablePadding sx={{ px: 2 }}>
-        {paths.dashboard.map((item, index) => (
-          <SidebarList
-            key={item.route + index}
-            item={item}
-            depth={1}
-            config={SidebarConfig(item.config)}
-            // routeName={currentRouteName}
-          />
-        ))}
-      </List> */}
+      {navData.map((group, index) => (
+        <SidebarGroup
+          key={group.subheader || index}
+          subheader={group.subheader}
+          items={group.items}
+          config={SidebarConfig(group.config)}
+        />
+      ))}
     </Scrollbar>
   );
 

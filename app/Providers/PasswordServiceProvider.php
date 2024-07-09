@@ -23,7 +23,8 @@ class PasswordServiceProvider extends ServiceProvider
         Password::defaults(function () {
             return Password::min(8)
                 ->mixedCase()
-                ->uncompromised();
+                ->symbols()
+                ->numbers();
         });
     }
 }

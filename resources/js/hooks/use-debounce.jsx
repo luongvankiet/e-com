@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 
 // ----------------------------------------------------------------------
 
@@ -15,5 +15,7 @@ export function useDebounce(value, delay = 500) {
     };
   }, [value, delay]);
 
-  return debouncedValue;
+  const memoizedValue = useMemo(() => debouncedValue, [debouncedValue]);
+
+  return memoizedValue;
 }

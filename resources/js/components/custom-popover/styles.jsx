@@ -1,7 +1,7 @@
 // @mui
 import { styled, alpha } from '@mui/material/styles';
 // theme
-import { bgBlur } from 'src/theme/css';
+import { bgBlur } from '@/theme/css';
 
 // ----------------------------------------------------------------------
 
@@ -37,7 +37,9 @@ export const StyledArrow = styled('span')(({ arrow, theme }) => {
     borderBottomLeftRadius: SIZE / 4,
     clipPath: 'polygon(0% 0%, 100% 100%, 0% 100%)',
     border: `solid 1px ${alpha(
-      theme.palette.mode === 'light' ? theme.palette.grey[500] : theme.palette.common.black,
+      theme.palette.mode === 'light'
+        ? theme.palette.grey[500]
+        : theme.palette.common.black,
       0.12
     )}`,
     ...bgBlur({

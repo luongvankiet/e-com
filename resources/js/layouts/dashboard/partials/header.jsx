@@ -3,15 +3,12 @@ import PropTypes from 'prop-types';
 import { AppBar, IconButton, Stack, Toolbar } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { SvgColor } from '@/components/icons';
-import { ASSETS_URL } from '@/config-global';
 import { useResponsive } from '@/hooks/use-responsive';
 import { HEADER, NAV } from '@/layouts/config-layout';
 import { bgBlur } from '@/theme/css';
 import ProfileDropdown from './profile-dropdown';
-
-Header.propTypes = {
-  onOpenNav: PropTypes.func,
-};
+import { APP_URL } from '@/config-global';
+import LanguagePopover from '@/layouts/components/language-popover';
 
 const Header = ({ onOpenNav }) => {
   const theme = useTheme();
@@ -44,9 +41,7 @@ const Header = ({ onOpenNav }) => {
       >
         {!lgUp && (
           <IconButton onClick={onOpenNav}>
-            <SvgColor
-              src={`${ASSETS_URL}/assets/icons/navbar/ic_menu_item.svg`}
-            />
+            <SvgColor src={`${APP_URL}/assets/icons/navbar/ic_menu_item.svg`} />
           </IconButton>
         )}
 
@@ -59,11 +54,17 @@ const Header = ({ onOpenNav }) => {
           justifyContent="flex-end"
           spacing={{ xs: 0.5, sm: 1 }}
         >
+          <LanguagePopover />
+          
           <ProfileDropdown />
         </Stack>
       </Toolbar>
     </AppBar>
   );
+};
+
+Header.propTypes = {
+  onOpenNav: PropTypes.func,
 };
 
 export default Header;

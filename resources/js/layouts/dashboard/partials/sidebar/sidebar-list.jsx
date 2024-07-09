@@ -1,10 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useMemo } from 'react';
 import { Collapse } from '@mui/material';
 import SidebarItem from './sidebar-item';
+import { usePage } from '@inertiajs/react';
 
-const SidebarList = ({ item, depth, config, routeName }) => {
+const SidebarList = ({ item, depth, config }) => {
+  const { current_route_name } = usePage().props;
+
+  const active = useMemo(
+    () =>
+      item.path === current_route_name ||
+      !!item.children?.find((subItem) => subItem.path === current_route_name) ||
+      false,
+    [current_route_name]
+  );
+
+  const externalLink = item.path?.includes('http');
+
   const [open, setOpen] = useState(active);
 
   const handleToggle = useCallback(() => {
@@ -19,8 +32,7 @@ const SidebarList = ({ item, depth, config, routeName }) => {
     if (!active) {
       handleClose();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname]);
+  }, [current_route_name]);
 
   return (
     <>
@@ -29,21 +41,24 @@ const SidebarList = ({ item, depth, config, routeName }) => {
         depth={depth}
         open={open}
         active={active}
+        externalLink={externalLink}
         onClick={handleToggle}
         config={config}
       />
-      {item.children?.length > 0 && (
-        <Collapse in={open} unmountOnExit>
-          {item.children.map((child, childIndex) => (
-            <SidebarList
-              key={`child${child.name}${child.action}${childIndex}`}
-              item={child}
-              depth={depth + 1}
-              config={config}
-            />
-          ))}
-        </Collapse>
-      )}
+
+      {item.children?.length > 0 &&
+        item.children?.filter((i) => !i.hidden).length > 0 && (
+          <Collapse in={open} unmountOnExit>
+            {item.children?.map((child, childIndex) => (
+              <SidebarList
+                key={`child${child.name}${child.action}${childIndex}`}
+                item={child}
+                depth={depth + 1}
+                config={config}
+              />
+            ))}
+          </Collapse>
+        )}
     </>
   );
 };

@@ -4,6 +4,7 @@
 // API
 // ----------------------------------------------------------------------
 
+export const APP_URL = import.meta.env.VITE_APP_URL;
 // export const HOST_API = import.meta.env.VITE_HOST_API;
 export const ASSETS_API = import.meta.env.VITE_ASSETS_API;
 export const ASSETS_URL = import.meta.env.VITE_ASSETS_URL;

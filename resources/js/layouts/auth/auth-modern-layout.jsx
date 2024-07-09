@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Logo from '@/components/logo';
-import { ASSETS_URL } from '@/config-global';
 import { useResponsive } from '@/hooks/use-responsive';
 import { bgGradient } from '@/theme/css';
 import { Box, Stack, Typography } from '@mui/material';
 import { alpha, useTheme } from '@mui/material/styles';
+import { APP_URL } from '@/config-global';
 
 AuthLayout.propTypes = {
   children: PropTypes.node,
@@ -46,7 +46,7 @@ export default function AuthLayout({ children, image, title }) {
                 theme.palette.background.default,
                 theme.palette.mode === 'light' ? 0.6 : 0.94
               ),
-              imgUrl: `${ASSETS_URL}/assets/background/overlay_2.jpg`,
+              imgUrl: `${APP_URL}/assets/background/overlay_2.jpg`,
             }),
           }}
         >
@@ -59,7 +59,7 @@ export default function AuthLayout({ children, image, title }) {
             alt="auth"
             src={
               image ||
-              `${ASSETS_URL}/assets/illustrations/illustration_dashboard.png`
+              `${APP_URL}/assets/illustrations/illustration_dashboard.png`
             }
             sx={{ maxWidth: 720 }}
           />
