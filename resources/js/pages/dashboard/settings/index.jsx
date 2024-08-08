@@ -20,8 +20,11 @@ import { DashboardLayout } from '@/layouts';
 import { route } from 'ziggy-js';
 import { routes } from '@/routes';
 import { useSettingsData } from './config-navigation';
+import { useLocales } from '@/locales';
 
 const Settings = () => {
+  const { t } = useLocales();
+
   const settings = useSettingsContext();
 
   const settingsData = useSettingsData();
@@ -32,10 +35,10 @@ const Settings = () => {
 
       <Container maxWidth={settings.themeStretch ? false : 'lg'}>
         <CustomBreadcrumbs
-          heading="Settings"
+          heading={t('Settings')}
           links={[
-            { name: 'Dashboard', href: routes.dashboard.overview.index },
-            { name: 'Settings' },
+            { name: t('Dashboard'), href: routes.dashboard.overview.index },
+            { name: t('Settings') },
           ]}
           sx={{
             mb: { xs: 3, md: 5 },

@@ -2,16 +2,27 @@
 
 namespace App\Models;
 
+use App\Events\UserSaved;
+use App\HasAddresses;
+use App\HasImages;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasFactory, Notifiable, HasRoles, SoftDeletes;
+    use HasFactory,
+        Notifiable,
+        HasRoles,
+        SoftDeletes,
+        HasImages,
+        HasAddresses;
 
     /**
      * The attributes that are mass assignable.
@@ -23,6 +34,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'last_name',
         'email',
         'password',
+        'phone',
+        'email_verified_at',
     ];
 
     /**
@@ -37,7 +50,12 @@ class User extends Authenticatable implements MustVerifyEmail
 
     protected $appends = [
         'full_name',
-        'role',
+        'all_permissions',
+        'role'
+    ];
+
+    protected $dispatchesEvents = [
+        'saved' => UserSaved::class
     ];
 
     /**
@@ -53,20 +71,14 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
-    // Method to check if the user is a super admin
-    public function isSuperAdmin()
+    protected function allPermissions(): Attribute
     {
-        return $this->hasAnyRole('super_admin');
+        return Attribute::make(
+            get: fn () => $this->getAllPermissions()->pluck('name'),
+        );
     }
 
-    public function scopeWithoutSuperAdmins($query)
-    {
-        return $query->whereDoesntHave('roles', function ($query) {
-            $query->where('name', 'super_admin');
-        });
-    }
-
-    public function getFullNameAttribute()
+    protected function fullName(): Attribute
     {
         $name = [];
 
@@ -78,13 +90,45 @@ class User extends Authenticatable implements MustVerifyEmail
             $name[] = $this->last_name;
         }
 
-        return implode(' ', $name);
+        return Attribute::make(
+            get: fn () => implode(' ', $name),
+        );
     }
 
-    public function getRoleAttribute()
+    protected function role(): Attribute
     {
-        return isset($this->resource->roles[0])
-            ? $this->roles[0]
-            : null;
+        return Attribute::make(
+            get: fn () => $this->roles[0] ?? null,
+        );
+    }
+
+    public function customer(): HasOne
+    {
+        return $this->hasOne(Customer::class);
+    }
+
+    // Method to check if the user is a super admin
+    public function isSuperAdmin()
+    {
+        return $this->hasAnyRole('super_admin');
+    }
+
+    public function scopeWithoutSuperAdmins($query)
+    {
+        /** @var User */
+        $user = Auth::user();
+
+        if (Auth::check() && !$user->isSuperAdmin()) {
+            return $query->whereDoesntHave('roles', function ($query) {
+                $query->where('name', 'super_admin');
+            });
+        }
+
+        return $query;
+    }
+
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new \App\Notifications\VerifyEmailQueued);
     }
 }

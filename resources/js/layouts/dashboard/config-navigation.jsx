@@ -28,18 +28,20 @@ export function useNavData() {
       {
         subheader: t('management'),
         items: [
-          // USER
           {
-            title: t('users'),
-            path: routes.dashboard.settings.users.index,
-            icon: ICONS.user,
-            children: [
-              { title: t('list'), path: routes.dashboard.settings.users.index },
-              {
-                title: t('create'),
-                path: routes.dashboard.settings.users.create,
-              },
-            ],
+            title: t('categories'),
+            path: routes.dashboard.categories.index,
+            icon: ICONS.menuItem,
+          },
+          {
+            title: t('brands'),
+            path: routes.dashboard.brands.index,
+            icon: ICONS.label,
+          },
+          {
+            title: t('products'),
+            path: routes.dashboard.products.index,
+            icon: ICONS.product,
           },
         ],
       },
@@ -55,10 +57,34 @@ export function useNavData() {
               {
                 title: t('accounts'),
                 path: routes.dashboard.settings.users.index,
+                children: [
+                  {
+                    title: t('create'),
+                    path: routes.dashboard.settings.users.create,
+                    hidden: true,
+                  },
+                  {
+                    title: t('edit'),
+                    path: routes.dashboard.settings.users.edit,
+                    hidden: true,
+                  },
+                ],
               },
               {
                 title: t('roles'),
                 path: routes.dashboard.settings.roles.index,
+                children: [
+                  {
+                    title: t('create'),
+                    path: routes.dashboard.settings.roles.create,
+                    hidden: true,
+                  },
+                  {
+                    title: t('edit'),
+                    path: routes.dashboard.settings.roles.edit,
+                    hidden: true,
+                  },
+                ],
               },
             ],
           },

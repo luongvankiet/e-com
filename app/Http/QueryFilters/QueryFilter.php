@@ -27,7 +27,7 @@ abstract class QueryFilter
     protected $sortBy;
 
     /** @var string */
-    protected $defaultSortBy = 'updated_at';
+    protected $defaultSortBy = 'created_at';
 
     /** @var array */
     protected $sortable = [
@@ -42,7 +42,7 @@ abstract class QueryFilter
 
     /** @var array */
     protected $allowsPerPage = [
-        5, 10, 20, 50, 100, 150, 200,
+        1, 5, 10, 20, 50, 100, 150, 200,
     ];
 
     /** @var int */

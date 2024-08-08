@@ -2,13 +2,13 @@ import PropTypes from 'prop-types';
 import { Box } from '@mui/material';
 import React, { useState } from 'react';
 import { Header, Main, Sidebar } from './partials';
-import { AdminProvider } from '@/contexts/admin/admin-provider';
+import { AppProvider } from '@/contexts/app/app-provider';
 
 const DashboardLayout = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <AdminProvider>
+    <AppProvider>
       <Header onOpenNav={() => setIsOpen(true)} />
       <Box
         sx={{
@@ -20,7 +20,7 @@ const DashboardLayout = ({ children }) => {
         <Sidebar openNav={isOpen} onCloseNav={() => setIsOpen(false)} />
         <Main>{children}</Main>
       </Box>
-    </AdminProvider>
+    </AppProvider>
   );
 };
 

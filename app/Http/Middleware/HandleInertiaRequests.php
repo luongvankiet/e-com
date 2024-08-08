@@ -2,8 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Schema;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -33,11 +35,14 @@ class HandleInertiaRequests extends Middleware
         return [
             ...parent::share($request),
             'auth' => [
-                'user' => $request->user(),
+                'user' => $request->user()
             ],
             'current_route_name' => Route::currentRouteName(),
             'location' => $request->url(),
-            'query' => $request->query()
+            'query' => $request->query(),
+            'tags' => Schema::hasTable('tags')
+                ? Tag::all()
+                : [],
         ];
     }
 }

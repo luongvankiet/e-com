@@ -11,7 +11,11 @@ const SidebarList = ({ item, depth, config }) => {
   const active = useMemo(
     () =>
       item.path === current_route_name ||
-      !!item.children?.find((subItem) => subItem.path === current_route_name) ||
+      item.children?.some(
+        (subItem) =>
+          subItem.path === current_route_name ||
+          subItem.children?.some((i) => i.path === current_route_name)
+      ) ||
       false,
     [current_route_name]
   );

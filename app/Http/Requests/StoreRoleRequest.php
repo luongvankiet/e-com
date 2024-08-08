@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
+use Spatie\Permission\Models\Role;
 
 class StoreRoleRequest extends FormRequest
 {
@@ -11,7 +13,7 @@ class StoreRoleRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return Gate::allows('create', Role::class);
     }
 
     /**
@@ -22,7 +24,9 @@ class StoreRoleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|unique:roles,name',
+            'display_name' => 'nullable|string|max:255',
+            'description' => 'nullable|string',
         ];
     }
 }

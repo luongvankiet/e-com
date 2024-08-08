@@ -11,6 +11,7 @@ import { Iconify } from '../icons';
 import Image from '../image';
 //
 import RejectionFiles from './errors-rejection-files';
+import { useLocales } from '@/locales';
 
 // ----------------------------------------------------------------------
 
@@ -19,9 +20,12 @@ export default function UploadAvatar({
   file,
   disabled,
   helperText,
+  onDelete,
   sx,
   ...other
 }) {
+  const { t } = useLocales();
+
   const {
     getRootProps,
     getInputProps,
@@ -153,7 +157,37 @@ export default function UploadAvatar({
         {renderContent}
       </Box>
 
-      {helperText && helperText}
+      {onDelete && hasFile && (
+        <Stack
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+          sx={{
+            mt: 1,
+            mx: 'auto',
+            cursor: 'pointer',
+          }}
+          spacing={0.4}
+          onClick={onDelete}
+        >
+          <Iconify
+            icon="solar:trash-bin-minimalistic-bold"
+            sx={{ color: 'error.main', mb: 0.2 }}
+            width={16}
+          />
+          <Typography
+            variant="caption"
+            sx={{
+              color: 'error.main',
+              fontWeight: 'bold',
+            }}
+          >
+            {t('Remove Picture')}
+          </Typography>
+        </Stack>
+      )}
+
+      {onDelete && !hasFile && helperText && helperText}
 
       <RejectionFiles fileRejections={fileRejections} />
     </>
@@ -166,4 +200,5 @@ UploadAvatar.propTypes = {
   file: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   helperText: PropTypes.object,
   sx: PropTypes.object,
+  onDelete: PropTypes.func,
 };

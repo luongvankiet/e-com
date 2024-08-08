@@ -2,9 +2,6 @@
 
 namespace App\Http\QueryFilters;
 
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Auth;
-
 class UserQueryFilter extends QueryFilter
 {
     protected $searchable = [
@@ -15,21 +12,8 @@ class UserQueryFilter extends QueryFilter
 
     protected $sortable = [
         'first_name',
-        'last_name',
-        'created_at'
+        'updated_at'
     ];
-
-    protected $defaultSortBy = 'updated_at';
-
-    // public function indexQuery()
-    // {
-    //     /** @var \App\Models\User $user*/
-    //     $user = Auth::user();
-
-    //     if (Auth::check() && !$user->isSuperAdmin()) {
-    //         $this->queryBuilder->withoutSuperAdmins();
-    //     }
-    // }
 
     public function roles($value)
     {

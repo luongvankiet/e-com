@@ -54,6 +54,9 @@ export function fileFormat(fileUrl) {
     case FORMAT_ILLUSTRATOR.includes(fileTypeByUrl(fileUrl)):
       format = 'illustrator';
       break;
+    case /(http(s?)):\/\//i.test(fileUrl):
+      format = 'url';
+      break;
     default:
       format = fileTypeByUrl(fileUrl);
   }
@@ -136,10 +139,12 @@ export function fileData(file) {
 
   // File
   return {
+    id: file.id,
     key: file.preview,
     name: file.name,
     size: file.size,
     path: file.path,
+    url: file.url,
     type: file.type,
     preview: file.preview,
     lastModified: file.lastModified,

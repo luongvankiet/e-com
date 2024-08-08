@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import RouterLink from '../router-link';
+import { route } from 'ziggy-js';
 // routes
 
 // ----------------------------------------------------------------------
@@ -45,7 +46,7 @@ export default function BreadcrumbsLink({ link, activeLast, disabled }) {
 
   if (href) {
     return (
-      <Link component={RouterLink} href={href} sx={styles}>
+      <Link component={RouterLink} href={route(href)} sx={styles}>
         {renderContent}
       </Link>
     );

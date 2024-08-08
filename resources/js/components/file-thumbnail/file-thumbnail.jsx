@@ -14,18 +14,19 @@ export default function FileThumbnail({
   tooltip,
   imageView,
   onDownload,
+  onClick,
   sx,
   imgSx,
 }) {
-  const { name = '', path = '', preview = '' } = fileData(file);
+  const { name = '', path = '', preview = '', url = '' } = fileData(file);
 
   const format = fileFormat(path || preview);
 
   const renderContent =
-    format === 'image' && imageView ? (
+    (['image', 'url'].includes(format) || url) && imageView ? (
       <Box
         component="img"
-        src={preview}
+        src={preview || url}
         sx={{
           width: 1,
           height: 1,
@@ -33,6 +34,7 @@ export default function FileThumbnail({
           objectFit: 'cover',
           ...imgSx,
         }}
+        onClick={onClick}
       />
     ) : (
       <Box
@@ -44,6 +46,7 @@ export default function FileThumbnail({
           flexShrink: 0,
           ...sx,
         }}
+        onClick={onClick}
       />
     );
 
@@ -80,6 +83,7 @@ FileThumbnail.propTypes = {
   imageView: PropTypes.bool,
   imgSx: PropTypes.object,
   onDownload: PropTypes.func,
+  onClick: PropTypes.func,
   sx: PropTypes.object,
   tooltip: PropTypes.bool,
 };

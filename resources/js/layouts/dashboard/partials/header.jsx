@@ -6,7 +6,7 @@ import { SvgColor } from '@/components/icons';
 import { useResponsive } from '@/hooks/use-responsive';
 import { HEADER, NAV } from '@/layouts/config-layout';
 import { bgBlur } from '@/theme/css';
-import ProfileDropdown from './profile-dropdown';
+import ProfileDropdown from '../../components/profile-dropdown';
 import { APP_URL } from '@/config-global';
 import LanguagePopover from '@/layouts/components/language-popover';
 
@@ -55,7 +55,7 @@ const Header = ({ onOpenNav }) => {
           spacing={{ xs: 0.5, sm: 1 }}
         >
           <LanguagePopover />
-          
+
           <ProfileDropdown />
         </Stack>
       </Toolbar>

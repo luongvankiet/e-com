@@ -49,7 +49,7 @@ export default function VerifyEmail({ status }) {
             </Alert>
           )}
         </Stack>
-
+ 
         <form onSubmit={submit}>
           <Stack direction="row" spacing={2}>
             <LoadingButton

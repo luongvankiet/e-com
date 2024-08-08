@@ -19,7 +19,7 @@ export function useMockedUser() {
     email: 'demo@minimals.cc',
     password: 'demo1234',
     photoURL: _mock.image.avatar(24),
-    phoneNumber: '+40 777666555',
+    phone: '+40 777666555',
     country: 'United States',
     address: '90210 Broadway Blvd',
     state: 'California',

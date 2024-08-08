@@ -15,18 +15,25 @@ import FileThumbnail, { fileData } from '../file-thumbnail';
 
 // ----------------------------------------------------------------------
 
-export default function MultiFilePreview({ thumbnail, files, onRemove, sx }) {
+export default function MultiFilePreview({
+  thumbnail,
+  files,
+  onRemove,
+  selectedFile,
+  onClickThumbnail,
+  sx,
+}) {
   return (
     <AnimatePresence initial={false}>
       {files?.map((file) => {
-        const { key, name = '', size = 0 } = fileData(file);
+        const { id = '', key, name = '', size = 0 } = fileData(file);
 
         const isNotFormatFile = typeof file === 'string';
 
         if (thumbnail) {
           return (
             <Stack
-              key={key}
+              key={`${key}-${name}-${id}`}
               component={m.div}
               {...varFade().inUp}
               alignItems="center"
@@ -39,8 +46,13 @@ export default function MultiFilePreview({ thumbnail, files, onRemove, sx }) {
                 borderRadius: 1.25,
                 overflow: 'hidden',
                 position: 'relative',
+                cursor: 'pointer',
                 border: (theme) =>
-                  `solid 1px ${alpha(theme.palette.grey[500], 0.16)}`,
+                  `solid ${
+                    selectedFile?.id === id
+                      ? '2px' + theme.palette.primary.main
+                      : '1px' + alpha(theme.palette.grey[500], 0.16)
+                  }`,
                 ...sx,
               }}
             >
@@ -50,6 +62,7 @@ export default function MultiFilePreview({ thumbnail, files, onRemove, sx }) {
                 file={file}
                 sx={{ position: 'absolute' }}
                 imgSx={{ position: 'absolute' }}
+                onClick={() => onClickThumbnail(file)}
               />
 
               {onRemove && (
@@ -77,7 +90,7 @@ export default function MultiFilePreview({ thumbnail, files, onRemove, sx }) {
 
         return (
           <Stack
-            key={key}
+            key={`${key}-${name}-${id}`}
             component={m.div}
             {...varFade().inUp}
             spacing={2}
@@ -88,12 +101,17 @@ export default function MultiFilePreview({ thumbnail, files, onRemove, sx }) {
               py: 1,
               px: 1.5,
               borderRadius: 1,
+              cursor: 'pointer',
               border: (theme) =>
-                `solid 1px ${alpha(theme.palette.grey[500], 0.16)}`,
+                `solid ${
+                  selectedFile?.id === id
+                    ? '2px' + theme.palette.primary.main
+                    : '1px' + alpha(theme.palette.grey[500], 0.16)
+                }`,
               ...sx,
             }}
           >
-            <FileThumbnail file={file} />
+            <FileThumbnail file={file} onClick={() => onClickThumbnail(file)} />
 
             <ListItemText
               primary={isNotFormatFile ? file : name}
@@ -102,6 +120,7 @@ export default function MultiFilePreview({ thumbnail, files, onRemove, sx }) {
                 component: 'span',
                 typography: 'caption',
               }}
+              onClick={() => onClickThumbnail(file)}
             />
 
             {onRemove && (
@@ -119,6 +138,8 @@ export default function MultiFilePreview({ thumbnail, files, onRemove, sx }) {
 MultiFilePreview.propTypes = {
   files: PropTypes.array,
   onRemove: PropTypes.func,
+  selectedFile: PropTypes.object,
+  onClickThumbnail: PropTypes.func,
   sx: PropTypes.object,
   thumbnail: PropTypes.bool,
 };

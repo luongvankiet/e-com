@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
 class UpdateUserRequest extends FormRequest
 {
@@ -11,7 +12,9 @@ class UpdateUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        $user = $this->route('user');
+
+        return Gate::allows('update', $user);
     }
 
     /**
@@ -21,8 +24,19 @@ class UpdateUserRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
+        $rules = [
+            'first_name' => 'required|max:255',
+            'last_name' => 'required|max:255',
+            'email' => 'required|email|unique:users,email,' . ($this->route('user') ? $this->route('user')->id : ''),
+            'password' => 'nullable|min:6|confirmed',
+            'role.*.id' => 'nullable|exists:roles,id',
+            'default_address' => 'nullable|array',
         ];
+
+        if (request()->hasFile('image') && request()->file('image')->isValid()) {
+            $rules['image'] = 'nullable|image|mimes:jpeg,jpg,png,gif,svg|max:10000';
+        }
+
+        return $rules;
     }
 }

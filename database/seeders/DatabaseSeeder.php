@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Brand;
+use App\Models\Category;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -23,7 +25,9 @@ class DatabaseSeeder extends Seeder
 
 
         $this->call([
-            PermissionSeeder::class
+            PermissionSeeder::class,
+            BrandSeeder::class,
+            CategorySeeder::class,
         ]);
 
         Artisan::call('translations:import');

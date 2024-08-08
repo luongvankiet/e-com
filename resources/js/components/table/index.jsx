@@ -2,6 +2,7 @@ export * from './utils';
 
 export { default as useTable } from './use-table';
 
+export { default as Table } from './table';
 export { default as TableNoData } from './table-no-data';
 export { default as TableSkeleton } from './table-skeleton';
 export { default as TableEmptyRows } from './table-empty-rows';

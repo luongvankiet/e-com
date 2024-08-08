@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Events\RoleAssigned;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -41,14 +42,20 @@ class PermissionSeeder extends Seeder
                 ]
             );
 
-            $user = \App\Models\User::factory()
-                // ->hasAddresses(3)
-                // ->hasImage(1)
-                ->create([
-                    'email' => "{$role['name']}@example.com",
-                ]);
+            for ($i = 1; $i <= 5; $i++) {
+                $user = \App\Models\User::factory()
+                    ->hasAddresses(1)
+                    ->hasImage(1)
+                    ->create([
+                        'email' => "{$role['name']}{$i}@example.com",
+                        'email_verified_at' => $role['name'] === 'customer' ? fake()->randomElement([now(), null]) : now(),
+                        'deleted_at' => $role['name'] === 'customer' ? fake()->randomElement([now(), null]) : null,
+                    ]);
 
-            $user->assignRole($newRole);
+                $user->assignRole($newRole);
+
+                RoleAssigned::dispatch($user, $newRole);
+            }
 
             if ($newRole->name === 'admin') {
                 $newRole->syncPermissions($allPermissions);

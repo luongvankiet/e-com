@@ -1,14 +1,8 @@
-// @ts-nocheck
-// routes
-
-// API
-// ----------------------------------------------------------------------
-
 export const APP_URL = import.meta.env.VITE_APP_URL;
+export const APP_NAME = import.meta.env.VITE_APP_NAME || 'E-commerce';
 // export const HOST_API = import.meta.env.VITE_HOST_API;
 export const ASSETS_API = import.meta.env.VITE_ASSETS_API;
 export const ASSETS_URL = import.meta.env.VITE_ASSETS_URL;
-export const PROJECT_NAME = import.meta.env.VITE_PROJECT_NAME || 'E-commerce';
 
 // export const FIREBASE_API = {
 //   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,

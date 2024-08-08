@@ -25,8 +25,8 @@ const visuallyHidden = {
 // ----------------------------------------------------------------------
 
 export default function TableHeadCustom({
-  order,
-  orderBy,
+  sortDirection,
+  sort,
   rowCount = 0,
   headLabel,
   numSelected = 0,
@@ -51,21 +51,21 @@ export default function TableHeadCustom({
           <TableCell
             key={headCell.id}
             align={headCell.align || 'left'}
-            sortDirection={orderBy === headCell.id ? order : false}
+            sortDirection={sort === headCell.id ? sortDirection : false}
             sx={{ width: headCell.width, minWidth: headCell.minWidth }}
           >
-            {onSort ? (
+            {onSort && headCell.sortable ? (
               <TableSortLabel
                 hideSortIcon
-                active={orderBy === headCell.id}
-                direction={orderBy === headCell.id ? order : 'asc'}
+                active={sort === headCell.id}
+                direction={sort === headCell.id ? sortDirection : 'asc'}
                 onClick={() => onSort(headCell.id)}
               >
                 {headCell.label}
 
-                {orderBy === headCell.id ? (
+                {sort === headCell.id ? (
                   <Box sx={{ ...visuallyHidden }}>
-                    {order === 'desc'
+                    {sortDirection === 'desc'
                       ? 'sorted descending'
                       : 'sorted ascending'}
                   </Box>
@@ -84,10 +84,10 @@ export default function TableHeadCustom({
 TableHeadCustom.propTypes = {
   sx: PropTypes.object,
   onSort: PropTypes.func,
-  orderBy: PropTypes.string,
+  sort: PropTypes.string,
   headLabel: PropTypes.array,
   rowCount: PropTypes.number,
   numSelected: PropTypes.number,
   onSelectAllRows: PropTypes.func,
-  order: PropTypes.oneOf(['asc', 'desc']),
+  sortDirection: PropTypes.oneOf(['asc', 'desc']),
 };

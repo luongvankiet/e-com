@@ -22,6 +22,7 @@ import { Iconify } from '../icons';
 export default function Upload({
   disabled,
   multiple = false,
+  selectedFile,
   error,
   helperText,
   //
@@ -30,6 +31,7 @@ export default function Upload({
   //
   files,
   thumbnail,
+  onClickThumbnail,
   onUpload,
   onRemove,
   onRemoveAll,
@@ -48,7 +50,7 @@ export default function Upload({
     ...other,
   });
 
-  const hasFile = !!file && !multiple;
+  const hasFile = !!file;
 
   const hasFiles = !!files && multiple && !!files.length;
 
@@ -114,6 +116,8 @@ export default function Upload({
         <MultiFilePreview
           files={files}
           thumbnail={thumbnail}
+          selectedFile={selectedFile}
+          onClickThumbnail={onClickThumbnail}
           onRemove={onRemove}
         />
       </Box>
@@ -176,7 +180,7 @@ export default function Upload({
             bgcolor: (theme) => alpha(theme.palette.error.main, 0.08),
           }),
           ...(hasFile && {
-            padding: '24% 0',
+            padding: '50% 0',
           }),
         }}
       >
@@ -203,9 +207,11 @@ Upload.propTypes = {
   files: PropTypes.array,
   helperText: PropTypes.object,
   multiple: PropTypes.bool,
+  selectedFile: PropTypes.object,
   onDelete: PropTypes.func,
   onRemove: PropTypes.func,
   onRemoveAll: PropTypes.func,
+  onClickThumbnail: PropTypes.func,
   onUpload: PropTypes.func,
   sx: PropTypes.object,
   thumbnail: PropTypes.bool,
